@@ -5,63 +5,77 @@ let listContainer = document.getElementById('todo-list');
 let deleteButton = document.querySelector('.delete-button');
 
 
-
-let listElements;
-let creationOfButton;
-let creationOfLi;
-let creationOfEdit;
-let creationOfh2;
-let updateButton;
-
-input.a
-addButton.disabled = input.value? 'false': 'true';
-
-
-addButton.addEventListener('click', () => {
-
-    creationOfLi = document.createElement('li');
-    creationOfButton = document.createElement('button');
-    creationOfEdit = document.createElement('button');
-    updateButton = document.createElement('button');
-    creationOfh2 = document.createElement('h2');
-
-    creationOfButton.classList.add('delete-button');
-    creationOfEdit.classList.add('edit-button');
-
-    creationOfh2.innerHTML = input.value;
-    creationOfButton.innerHTML = "X";
-    creationOfEdit.innerHTML = "Edit";
-    updateButton.innerHTML = "Update";
-
-
-    creationOfLi.appendChild(creationOfh2);
-    creationOfLi.appendChild(creationOfButton);
-    creationOfLi.appendChild(creationOfEdit);
-    listContainer.appendChild(creationOfLi);
-
-    
-    input.value = ''
-    creationOfButton?.addEventListener('click', (e) => {
-        e.target.parentElement.remove();
-    })
-
-    creationOfEdit?.addEventListener('click', (e) => {
-        input.value = creationOfh2.innerText;
-        wrapper.appendChild(updateButton);
-    })
-    
-    updateButton?.addEventListener('click', (e) => {
-        input.value = '';
-        creationOfh2.innerHTML = input.value;
-    })
+input.addEventListener('keyup', ()=> {
+    addButton.disabled = false;
 })
 
+let lisatData = [];
+let idOfList;
 
+addButton.addEventListener('click', () => {
+    if(addButton.innerHTML === 'Update'){
+        document.querySelectorAll(`li[data-id="${idOfList}"]`).forEach(() => {
+            lisatData.forEach(arrEl => {
+                if(idOfList == arrEl.id){
+                    arrEl.listText = input.value;
+                }
+            })
+        });
+        listContainer.innerHTML = '';
+    }
 
+    else{
+        
+        addButton.disabled = input.value? false: true;  
+    
+        let listObj = {
+            id: new Date(),
+            listText: input.value,
+        }
+    
+        lisatData.push(listObj);
+    
+    }
 
+    listContainer.innerHTML = '';
+    input.value = '';
 
-// function deleteListElement(e){
-//     console.log(e.target.parentElement)
-//     // this.parentElement.remove();
+    lisatData.forEach(data => {
+        listContainer.innerHTML +=`
+            <li data-id="${data.id}">
+                <h2>${data.listText}</h2>
+                <span>
+                    <button class="delete-button" onclick="removeList( '${data.id}' )">X</button>
+                    <button onclick="editList(this.parentElement.previousElementSibling.innerHTML, '${data.id}' )">Edit</button>
+                <span/>
+            </li>
+        `
+    })
+    addButton.innerHTML = 'Add';
+})
+
+function removeList(id){
+    lisatData.forEach(arrEl => {
+        if(id == arrEl.id){
+            lisatData.splice(arrEl, 1)
+        }
+    })
+    document.querySelector(`li[data-id="${id}"]`).remove();
+}
+
+function editList(liText, id){
+    input.value = liText;
+    addButton.innerHTML = 'Update';
+    addButton.disabled = input.value? false: true;
+    idOfList = id;
+}
+
+// addButton.addEventListener('click', () => {
+//     input.value = '';
+//     addButton.disabled = input.value? false: true;  
+// })
+
+// function createElementScheama(params) {
+    
+//         console.log(lisatData)
 // }
-
