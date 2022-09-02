@@ -69,13 +69,3 @@ function editList(liText, id){
     addButton.disabled = input.value? false: true;
     idOfList = id;
 }
-
-// addButton.addEventListener('click', () => {
-//     input.value = '';
-//     addButton.disabled = input.value? false: true;  
-// })
-
-// function createElementScheama(params) {
-    
-//         console.log(lisatData)
-// }
